@@ -32,8 +32,7 @@ if __name__ == '__main__':
     # setup()
     while True:
         clk = t.localtime()
-        hr = clk.tm_hour
-        min = clk.tm_min
-        print(hr,min)
-
+        h = divmod(clk.tm_hour,10)
+        m = divmod(clk.tm_min,10)
+        print(h,m)
     
