@@ -1,9 +1,9 @@
 import RPi.GPIO as g
-import datetime as d
+from datetime import time as t
 import time as t
 
-dp   = 18      
-lp  = 16      
+dp = 18      
+lp = 16      
 cp = 12       
 num = (0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90)
 common = (11,13,15,19)    
@@ -28,9 +28,21 @@ def digit(d):
         g.output(cp,g.LOW)
         g.output(lp,g.LOW)
         g.output(lp,g.HIGH)
-    g.output(common[3],0)
     t.sleep(.1)
     g.output(lp,g.LOW)
 
+def clk(p,dig):
+    digit(p)
+    g.output(common[dig],0)
+    t.sleep(1)
+    g.output(common[dig],1)
+    
+
 if __name__ == '__main__':
     setup()
+    while True:
+        hr = t.localtime()
+        toot = hr.tm_sec
+        clk(toot,0)
+
+    
