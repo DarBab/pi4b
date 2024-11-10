@@ -20,14 +20,12 @@ def setup():
         g.output(pin,g.HIGH)
 
 def digit(d):
+    g.output(lp,g.HIGH)
     for i in range(8):
         b = ((d<<i&128) and g.HIGH)
         g.output(dp,b)
         g.output(cp,g.HIGH)
-        g.output(lp,g.HIGH)
-        g.output(cp,g.LOW)
-        g.output(lp,g.LOW)
-        g.output(lp,g.HIGH)
+       g.output(cp,g.LOW)       
     t.sleep(.1)
     g.output(lp,g.LOW)
 
