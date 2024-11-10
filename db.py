@@ -1,4 +1,4 @@
-import RPi.GPIO as g
+# import RPi.GPIO as g
 from datetime import time as t
 import time as t
 
@@ -25,22 +25,15 @@ def digit(d):
         b = ((d<<i&128) and g.HIGH)
         g.output(dp,b)
         g.output(cp,g.HIGH)
-       g.output(cp,g.LOW)       
-    t.sleep(.1)
+        g.output(cp,g.LOW)       
     g.output(lp,g.LOW)
 
-def clk(p,dig):
-    digit(p)
-    g.output(common[dig],0)
-    t.sleep(1)
-    g.output(common[dig],1)
-    
-
 if __name__ == '__main__':
-    setup()
+    # setup()
     while True:
-        hr = t.localtime()
-        toot = hr.tm_sec
-        clk(toot,0)
+        clk = t.localtime()
+        hr = clk.tm_hour
+        min = clk.tm_min
+        print(hr,min)
 
     
