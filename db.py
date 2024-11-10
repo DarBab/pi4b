@@ -1,4 +1,4 @@
-# import RPi.GPIO as g
+import RPi.GPIO as g
 from datetime import time as t
 import time as t
 
