@@ -10,6 +10,7 @@ width = 800
 height = 400
 thing = [0] * 4
 screen = p.display.set_mode([width,height])
+
 class thang(p.sprite.Sprite):
     def __init__(self,x,y):
         p.sprite.Sprite.__init__()
@@ -17,7 +18,8 @@ class thang(p.sprite.Sprite):
         p.sprite.Sprite.add(one,d)
         print(d,one)
 
-    def drop():
+    
+def drop():
         p.Surface.blit(screen,cool,(10,10))
         print('gh')
        
