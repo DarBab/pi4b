@@ -78,6 +78,7 @@ void draw() {
       bl[j].show();
       bl[j].check();
       if (ct>=500){
+		    delay(2);
          bl[j].drop();
       }
    }
