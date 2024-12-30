@@ -72,17 +72,12 @@ void setup() {
 
 
 void draw() {
-   ct+=1;
    background(0,0,2);
-   for (int j=0;j<30;j=j+1){
+   for (int j=0;j<300;j=j+1){
       bl[j].show();
       bl[j].check();
-      if (ct>=500){
-		    delay(2);
-         bl[j].drop();
-      }
+      
    }
-   
 }
 
 
