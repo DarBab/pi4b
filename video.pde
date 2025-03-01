@@ -1,6 +1,6 @@
 
-bl=[500];
-ct = 0;
+int [] bl = [500];
+int cnt = 1000;
 
 class Ball{
    float x,y,xm,ym,tsz;
@@ -41,8 +41,10 @@ class Ball{
          ym=-ym;
       }
    }
+   
    void drop(){
-      y=0;
+      xm = 0;
+      ym = 0;
    }
 }
 
@@ -54,7 +56,7 @@ class Ball{
 
 
 void setup() {
-   size(screenWidth, screenHeight,P3D);
+   size(screenWidth, screenHeight,);
    for (int i=0;i<400;i=i+1){
       z=random(50);
       w=random(screenWidth);
@@ -72,14 +74,26 @@ void setup() {
 
 
 void draw() {
-   background(0,0,2);
+   background(0,0,2555);
+   cnt = cnt - 1;
+   
    for (int j=0;j<300;j=j+1){
       bl[j].show();
       bl[j].check();
+      if (cnt <= 0){
+         fall();
+      }
+      
       
    }
+   
 }
 
+void fall() {
+   for (int j=0;j<300;j=j+1){
+      bl[j].drop();
+   }
+}
 
 
 
