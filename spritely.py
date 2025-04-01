@@ -42,13 +42,15 @@ me = char(monster)
 bert_Group.add(me)
 x = 500
 y = 200
-dx = 32
-dy = 48
 n = 0
 for i in range(10):
-  y+=48
+  dx=-(32*i)
+  dy=48*i
+  tx=dx+x
+  y=200+dy
   for j in range(i+1):
-    b[n] = block(cube[0],x,y)
+    b[n] = block(cube[0],tx,y)
+    tx+=64
     block_Group.add(b[n])
     n+=1
 print(n)
