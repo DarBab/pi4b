@@ -28,7 +28,7 @@ class qbert(p.sprite.Sprite):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = (500,170)
+        self.rect.center = (50,17)
     def rot(self):
 #        print(c,tc)
         me.image = bert[1]
@@ -47,7 +47,7 @@ class monster(p.sprite.Sprite):
         self.rect = self.image.get_rect() 
         self.rect.center = (x,y)   
 
-me = qbert(bert[3])
+me = qbert(bert[0])
 m1 = monster(monsters[0],214,586)
 m2 = monster(monsters[2],790,586)
 bert_Group.add(me)
@@ -71,12 +71,13 @@ while run:
   for event  in p.event.get():
     if event.type == p.QUIT:
       run = False
-  for ty in range(55):     
-    if p.sprite.collide_mask(b[ty],me):
-      b[ty].image = cube[1]
   screen.fill("BLUE")
+  for ty in range(55):     
+    if p.sprite.spritecollide(b[ty],bert_Group,0,p.sprite.collide_rect_ratio(.5)):
+      b[ty].image = cube[1]
+
   mx,my = p.mouse.get_pos()
-  print(mx,my)
+#  print(mx,my)
   me.rect.center = (mx,my)
   block_Group.draw(screen)
   bert_Group.draw(screen)
