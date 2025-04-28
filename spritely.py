@@ -11,6 +11,7 @@ b = [0] * 60
 monsters = [0] * 10
 bert = [0] * 10
 n = 0
+run = True
 #sprites from sheet
 for i in range(8):
   monsters[i] = p.transform.scale2x(sheet.subsurface(i*16,32,16,32))
@@ -36,6 +37,12 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
+        for i in range(55):     
+          if p.sprite.spritecollide(b[i],bert_Group,0,p.sprite.collide_circle_ratio(.5)):
+            b[i].image = cube[0]
+            print(i)
+
+          p.QUIT
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -55,6 +62,7 @@ m2 = monster(monsters[2],790,586)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
 
+#  draw the grid?   
 for i in range(10):
   x=-(32*i)+500
   y=200+48*i
@@ -63,10 +71,8 @@ for i in range(10):
     x+=64
     block_Group.add(b[n])
     n+=1
-   
 p.display.set_caption("Bab bert")
-run = True
-while run:
+while run == True:
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
@@ -81,9 +87,6 @@ while run:
         run = False
   screen.fill("BLUE")
 #  qb colliding with blocks
-  for i in range(55):     
-    if p.sprite.spritecollide(b[i],bert_Group,0,p.sprite.collide_circle_ratio(.5)):
-      b[i].image = cube[0]
     
   mx,my = p.mouse.get_pos()
   print(mx,my)
@@ -93,10 +96,6 @@ while run:
   block_Group.update()
   bert_Group.update()
   monster_Group.update()
-  him = p.mask.from_surface(me.image)
-  him.to_surface()
-  print(him)
-
   p.display.update()
 
 
