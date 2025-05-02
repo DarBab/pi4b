@@ -11,7 +11,7 @@ b = [0] * 60
 monsters = [0] * 10
 bert = [0] * 10
 n = 0
-run = True
+run = 1
 #sprites from sheet
 for i in range(8):
   monsters[i] = p.transform.scale2x(sheet.subsurface(i*16,32,16,32))
@@ -37,12 +37,14 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
+        n = 0
         for i in range(55):     
           if p.sprite.spritecollide(b[i],bert_Group,0,p.sprite.collide_circle_ratio(.5)):
             b[i].image = cube[0]
-            print(i)
-
-          p.QUIT
+            n+=1
+          print(n)
+          if n == 0:
+            run = 0
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -89,7 +91,7 @@ while run == True:
 #  qb colliding with blocks
     
   mx,my = p.mouse.get_pos()
-  print(mx,my)
+#  print(mx,my)
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
