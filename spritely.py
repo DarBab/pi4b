@@ -11,7 +11,7 @@ b = [0] * 60
 monsters = [0] * 10
 bert = [0] * 10
 n = 0
-run = 1
+run = True
 #sprites from sheet
 for i in range(8):
   monsters[i] = p.transform.scale2x(sheet.subsurface(i*16,32,16,32))
@@ -33,8 +33,8 @@ class qbert(p.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (500,170)
     def move(self,x,y,index):
-        self.rect.x+=x
-        self.rect.y+=y
+        tx = self.rect.x
+        ty = self.rect.y
         self.index = index
         me.image = bert[index]
         n = 0
@@ -44,13 +44,16 @@ class qbert(p.sprite.Sprite):
             n+=1
           print(n)
           if n == 0:
-            run = 0
+            self.rect.x = tx
+            self.rect.y = ty
+
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect() 
         self.rect.center = (x,y) 
+
 class monster(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
