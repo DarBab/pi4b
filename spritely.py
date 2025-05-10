@@ -35,14 +35,19 @@ class qbert(p.sprite.Sprite):
     def move(self,x,y,index):
         tx = self.rect.x
         ty = self.rect.y
+        self.rect.x+=x
+        self.rect.y+=y
+
         self.index = index
         me.image = bert[index]
         n = 0
         for i in range(55):     
-          if p.sprite.spritecollide(b[i],bert_Group,0,p.sprite.collide_circle_ratio(.5)):
-            b[i].image = cube[0]
-            n+=1
-          print(n)
+          col = p.sprite.spritecollide(b[i],bert_Group,0,p.sprite.collide_circle_ratio(.5))
+          if col:
+           b[i].image = cube[0]
+           print(col)
+          n+=1
+#          print(n)
           if n == 0:
             self.rect.x = tx
             self.rect.y = ty
