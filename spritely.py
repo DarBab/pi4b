@@ -33,25 +33,10 @@ class qbert(p.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (500,170)
     def move(self,x,y,index):
-        tx = self.rect.x
-        ty = self.rect.y
         self.rect.x+=x
         self.rect.y+=y
-
         self.index = index
         me.image = bert[index]
-        n = 0
-        for i in range(55):     
-          col = p.sprite.spritecollide(b[i],bert_Group,0,p.sprite.collide_circle_ratio(.5))
-          if col:
-           b[i].image = cube[0]
-           print(col)
-          n+=1
-#          print(n)
-          if n == 0:
-            self.rect.x = tx
-            self.rect.y = ty
-
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -107,5 +92,8 @@ while run == True:
   bert_Group.update()
   monster_Group.update()
   p.display.update()
-
-
+  col = p.sprite.spritecollide(me,block_Group,0,p.sprite.collide_circle_ratio(.5))
+  if col:
+    col[0].image = cube[0]
+  else:
+     run = False
