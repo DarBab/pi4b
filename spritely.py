@@ -37,6 +37,7 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
+
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -96,4 +97,5 @@ while run == True:
   if col:
     col[0].image = cube[0]
   else:
-     run = False
+    me.rect.center = (500,170)
+
