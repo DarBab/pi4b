@@ -85,7 +85,7 @@ while run == True:
 #  qb colliding with blocks
     
   mx,my = p.mouse.get_pos()
-#  print(mx,my)
+  print(mx,my)
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
