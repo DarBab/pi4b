@@ -12,16 +12,13 @@ monsters = [0] * 10
 bert = [0] * 10
 n = 0
 run = True
-#sprites from sheet
 for i in range(8):
   monsters[i] = p.transform.scale2x(sheet.subsurface(i*16,32,16,32))
   bert[i] = p.transform.scale2x(sheet.subsurface(i*16,0,16,16))
 
-#blocks from sheet
 for i in range(3):
   cube[i]= sheet.subsurface(0,160+(i*32),32,32)
   cube[i]= p.transform.scale2x(cube[i])
-#different groups
 bert_Group = p.sprite.Group()
 block_Group = p.sprite.Group()
 monster_Group = p.sprite.Group()
@@ -37,6 +34,12 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
+    def check(self):     
+      col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
+      if col:
+        col[0].image = cube[0]
+      else:
+        me.rect.center = (500,170)
 
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
@@ -58,7 +61,6 @@ m2 = monster(monsters[2],790,586)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
 
-#  draw the grid?   
 for i in range(10):
   x=-(32*i)+500
   y=200+48*i
@@ -82,7 +84,6 @@ while run == True:
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
-#  qb colliding with blocks
     
   mx,my = p.mouse.get_pos()
   print(mx,my)
@@ -93,9 +94,6 @@ while run == True:
   bert_Group.update()
   monster_Group.update()
   p.display.update()
-  col = p.sprite.spritecollide(me,block_Group,0,p.sprite.collide_circle_ratio(.5))
-  if col:
-    col[0].image = cube[0]
-  else:
-    me.rect.center = (500,170)
+  me.check()
+
 
