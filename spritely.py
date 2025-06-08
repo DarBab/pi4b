@@ -1,4 +1,5 @@
 import pygame as p
+import random as r
 p.init()
 clock = p.time.Clock()
 width = 1024
@@ -9,6 +10,8 @@ swear = p.transform.scale2x(sheet.subsurface(128,83,48,25))
 cube = [0] * 60
 b = [0] * 60
 monsters = [0] * 10
+monster_x = [-32,32]
+monster_y = [-48,48]
 bert = [0] * 10
 n = 0
 run = True
@@ -19,6 +22,7 @@ for i in range(8):
 for i in range(3):
   cube[i]= sheet.subsurface(0,160+(i*32),32,32)
   cube[i]= p.transform.scale2x(cube[i])
+
 bert_Group = p.sprite.Group()
 block_Group = p.sprite.Group()
 monster_Group = p.sprite.Group()
@@ -39,7 +43,7 @@ class qbert(p.sprite.Sprite):
       if col:
         col[0].image = cube[0]
       else:
-        me.rect.center = (500,170)
+        self.rect.center = (500,170)
 
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
@@ -53,7 +57,18 @@ class monster(p.sprite.Sprite):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect() 
-        self.rect.center = (x,y)   
+        self.rect.center = (x,y) 
+    def move(self):
+          left = r.randint(0,1)
+          right = r.randint(0,1)
+          self.rect.x += monster_x[left]
+          self.rect.y += monster_x[right]
+    def check(self):     
+      col = p.sprite.spritecollide(self,bert_Group,0,p.sprite.collide_circle_ratio(.5))
+      if col:
+        col[0].image = cube[0]
+      else:
+        self.rect.center = (500,170)
 
 me = qbert(bert[1])
 m1 = monster(monsters[0],214,586)
@@ -69,6 +84,7 @@ for i in range(10):
     x+=64
     block_Group.add(b[n])
     n+=1
+
 p.display.set_caption("Bab bert")
 while run == True:
   for event in p.event.get():
@@ -81,12 +97,16 @@ while run == True:
         me.move(-32,-48,3)
       if event.key == p.K_e:
         me.move(32,-48,1)
+      if event.key == p.K_u:
+         m1.move()  
+      if event.key == p.K_i:
+         m2.move()  
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
     
   mx,my = p.mouse.get_pos()
-  print(mx,my)
+#  print(mx,my)
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
@@ -96,4 +116,5 @@ while run == True:
   p.display.update()
   me.check()
 
-
+#  m1.move()
+#  m2.move()
