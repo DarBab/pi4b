@@ -28,11 +28,11 @@ block_Group = p.sprite.Group()
 monster_Group = p.sprite.Group()
 
 class qbert(p.sprite.Sprite):
-    def __init__(self,image):
+    def __init__(self,image,x,y):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = (500,170)
+        self.rect.center = (x,y)
     def move(self,x,y,index):
         self.rect.x+=x
         self.rect.y+=y
@@ -44,7 +44,6 @@ class qbert(p.sprite.Sprite):
         col[0].image = cube[0]
       else:
         self.rect.center = (500,170)
-
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -52,27 +51,9 @@ class block(p.sprite.Sprite):
         self.rect = self.image.get_rect() 
         self.rect.center = (x,y) 
 
-class monster(p.sprite.Sprite):
-    def __init__(self,image,x,y):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect() 
-        self.rect.center = (x,y) 
-    def move(self):
-          left = r.randint(0,1)
-          right = r.randint(0,1)
-          self.rect.x += monster_x[left]
-          self.rect.y += monster_x[right]
-    def check(self):     
-      col = p.sprite.spritecollide(self,bert_Group,0,p.sprite.collide_circle_ratio(.5))
-      if col:
-        col[0].image = cube[0]
-      else:
-        self.rect.center = (500,170)
-
-me = qbert(bert[1])
-m1 = monster(monsters[0],214,586)
-m2 = monster(monsters[2],790,586)
+me = qbert(bert[1],500,170)
+m1 = qbert(monsters[0],214,586)
+m2 = qbert(monsters[2],790,586)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
 
@@ -84,6 +65,19 @@ for i in range(10):
     x+=64
     block_Group.add(b[n])
     n+=1
+
+def crap():
+  left = r.randint(0,1)
+  right = r.randint(0,1)
+  m1.rect.x += monster_x[left]
+  m1.rect.y += monster_y[right]
+
+def crup():
+  left = r.randint(0,1)
+  right = r.randint(0,1)
+  m2.rect.x += monster_x[left]
+  m2.rect.y += monster_y[right]
+
 
 p.display.set_caption("Bab bert")
 while run == True:
@@ -97,10 +91,6 @@ while run == True:
         me.move(-32,-48,3)
       if event.key == p.K_e:
         me.move(32,-48,1)
-      if event.key == p.K_u:
-         m1.move()  
-      if event.key == p.K_i:
-         m2.move()  
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
@@ -115,6 +105,6 @@ while run == True:
   monster_Group.update()
   p.display.update()
   me.check()
+  crap()
+  crup()
 
-#  m1.move()
-#  m2.move()
