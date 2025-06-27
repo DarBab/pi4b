@@ -38,9 +38,10 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
-    def check(self):     
-      col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
-      if col:
+    def check(self,group):     
+      col = p.sprite.spritecollide(self,group,0,p.sprite.collide_circle_ratio(.5))
+      if col &! col[
+         col[0].:
         col[0].image = cube[0]
       else:
         self.rect.center = (500,170)
