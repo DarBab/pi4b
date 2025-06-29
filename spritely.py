@@ -38,10 +38,9 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
-    def check(self,group):     
-      col = p.sprite.spritecollide(self,group,0,p.sprite.collide_circle_ratio(.5))
-      if col &! col[
-         col[0].:
+    def check(self,gr):     
+      col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
+      if col:
         col[0].image = cube[0]
       else:
         self.rect.center = (500,170)
@@ -73,12 +72,6 @@ def crap():
   m1.rect.x += monster_x[left]
   m1.rect.y += monster_y[right]
 
-def crup():
-  left = r.randint(0,1)
-  right = r.randint(0,1)
-  m2.rect.x += monster_x[left]
-  m2.rect.y += monster_y[right]
-
 
 p.display.set_caption("Bab bert")
 while run == True:
@@ -105,7 +98,5 @@ while run == True:
   bert_Group.update()
   monster_Group.update()
   p.display.update()
-  me.check()
-  crap()
-  crup()
+  me.check(block_Group)
 
