@@ -39,11 +39,11 @@ class qbert(p.sprite.Sprite):
         self.index = index
         me.image = bert[index]
     def check(self,gr):     
-      col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
-      if col:
-        col[0].image = cube[0]
-      else:
-        self.rect.center = (500,170)
+        col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
+        if col:
+          col[0].image = cube[0]
+        else:
+          self.rect.center = (500,170)
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
