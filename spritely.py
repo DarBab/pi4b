@@ -41,9 +41,12 @@ class qbert(p.sprite.Sprite):
     def check(self,gr):     
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
         if col:
-          col[0].image = cube[0]
-        else:
-          self.rect.center = (500,170)
+          if gr == block_Group:     
+            col[0].image = cube[0]
+          else:
+            col[0].image = swear
+            self.rect.center = (500,170)
+               
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -85,12 +88,14 @@ while run == True:
         me.move(-32,-48,3)
       if event.key == p.K_e:
         me.move(32,-48,1)
+      if event.key == p.K_y:
+        m1.move(32,-48,1)
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
     
   mx,my = p.mouse.get_pos()
-#  print(mx,my)
+  print(mx,my)
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
@@ -99,4 +104,5 @@ while run == True:
   monster_Group.update()
   p.display.update()
   me.check(block_Group)
+  m1.check(bert_Group)
 
