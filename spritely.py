@@ -44,8 +44,9 @@ class qbert(p.sprite.Sprite):
           if gr == block_Group:     
             col[0].image = cube[0]
           else:
-            col[0].image = swear
             self.rect.center = (500,170)
+        else:
+          self.rect.center = (500,170)
                
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
@@ -78,6 +79,9 @@ def crap():
 
 p.display.set_caption("Bab bert")
 while run == True:
+  rx = r.randint(0,1)
+  ry = r.randint(0,1)
+
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
@@ -88,14 +92,11 @@ while run == True:
         me.move(-32,-48,3)
       if event.key == p.K_e:
         me.move(32,-48,1)
-      if event.key == p.K_y:
-        m1.move(32,-48,1)
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
     
   mx,my = p.mouse.get_pos()
-  print(mx,my)
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
@@ -105,4 +106,4 @@ while run == True:
   p.display.update()
   me.check(block_Group)
   m1.check(bert_Group)
-
+  m2.check(bert_Group)
