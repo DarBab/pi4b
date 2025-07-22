@@ -38,16 +38,24 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
-    def check(self,gr):     
+    def m_move(self):
+      left = r.randint(0,1)
+      right = r.randint(0,1)
+      self.rect.x += monster_x[left]
+      self.rect.y += monster_y[right]
+    def check(self,gr): 
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
         if col:
           if gr == block_Group:     
             col[0].image = cube[0]
           else:
             self.rect.center = (500,170)
+          if gr == bert_Group:
+             col[0].image = swear
+          else:
+             col[0] = cube[2]
         else:
-          self.rect.center = (500,170)
-               
+          self.image = monsters[0]
 class block(p.sprite.Sprite):
     def __init__(self,image,x,y):
         super().__init__()
@@ -70,18 +78,10 @@ for i in range(10):
     block_Group.add(b[n])
     n+=1
 
-def crap():
-  left = r.randint(0,1)
-  right = r.randint(0,1)
-  m1.rect.x += monster_x[left]
-  m1.rect.y += monster_y[right]
 
 
 p.display.set_caption("Bab bert")
 while run == True:
-  rx = r.randint(0,1)
-  ry = r.randint(0,1)
-
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
@@ -92,6 +92,8 @@ while run == True:
         me.move(-32,-48,3)
       if event.key == p.K_e:
         me.move(32,-48,1)
+      if event.key == p.K_y:
+        m1.m_move()
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
