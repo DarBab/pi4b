@@ -38,24 +38,12 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y
         self.index = index
         me.image = bert[index]
-    def m_move(self):
-      left = r.randint(0,1)
-      right = r.randint(0,1)
-      self.rect.x += monster_x[left]
-      self.rect.y += monster_y[right]
     def check(self,gr): 
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
-        print(col)
         if col:
             col[0].image = cube[0]
         else:
             self.rect.center = (500,170)
-class block(p.sprite.Sprite):
-    def __init__(self,image,x,y):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect() 
-        self.rect.center = (x,y) 
 
 me = qbert(bert[1],500,170)
 m1 = qbert(monsters[0],214,586)
@@ -67,7 +55,7 @@ for i in range(10):
   x=-(32*i)+500
   y=200+48*i
   for j in range(i+1):
-    b[n] = block(cube[2],x,y)
+    b[n] = qbert(cube[2],x,y)
     x+=64
     block_Group.add(b[n])
     n+=1
@@ -88,7 +76,7 @@ while run == True:
       if event.key == p.K_e:
         me.move(32,-48,1)
       if event.key == p.K_y:
-        m1.m_move()
+        m1.move(32,-48,)
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
@@ -100,5 +88,8 @@ while run == True:
   block_Group.update()
   bert_Group.update()
   monster_Group.update()
-  p.display.update()
   me.check(block_Group)
+#  m1.check(bert_Group)
+  p.display.update()
+ #     left = r.randint(0,1)
+ #     right = r.randint(0,1)
