@@ -33,11 +33,11 @@ class qbert(p.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-    def move(self,x,y,index):
+    def move(self,x,y,char):
         self.rect.x+=x
         self.rect.y+=y
         self.index = index
-        me.image = bert[index]
+        me.image = char
     def check(self,gr): 
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
         if col:
@@ -68,15 +68,15 @@ while run == True:
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
-        me.move(32,48,5)
+        me.move(32,48,bert[5])
       if event.key == p.K_z:
-        me.move(-32,48,7)
+        me.move(-32,48,bert[7])
       if event.key == p.K_q:
-        me.move(-32,-48,3)
+        me.move(-32,-48,bert[3])
       if event.key == p.K_e:
-        me.move(32,-48,1)
+        me.move(32,-48,bert[1])
       if event.key == p.K_y:
-        m1.move(32,-48,)
+        m1.move(32,-48,monsters[0])
       if event.key == p.K_f:
         run = False
   screen.fill("BLUE")
