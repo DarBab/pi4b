@@ -36,14 +36,21 @@ class qbert(p.sprite.Sprite):
     def move(self,x,y,char):
         self.rect.x+=x
         self.rect.y+=y
-        self.index = index
-        me.image = char
-    def check(self,gr): 
+        self.image = char
+    def qcheck(self,gr): 
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
         if col:
-            col[0].image = cube[0]
+           col[0].image = cube[1] 
         else:
-            self.rect.center = (500,170)
+           self.rect.center = [500,170]
+    def mcheck(self,gr): 
+        col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
+        if col:
+          print('good')
+          return 1
+        else:
+            return 0
+
 
 me = qbert(bert[1],500,170)
 m1 = qbert(monsters[0],214,586)
@@ -64,7 +71,7 @@ for i in range(10):
 
 p.display.set_caption("Bab bert")
 while run == True:
-  clock.tick(120)
+  clock.tick(60)
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
@@ -76,10 +83,10 @@ while run == True:
       if event.key == p.K_e:
         me.move(32,-48,bert[1])
       if event.key == p.K_y:
-        m1.move(32,-48,monsters[0])
+        m1.move(32,-48,monsters[1])
       if event.key == p.K_f:
         run = False
-  screen.fill("BLUE")
+  screen.fill("cyan")
     
   mx,my = p.mouse.get_pos()
   block_Group.draw(screen)
@@ -88,8 +95,13 @@ while run == True:
   block_Group.update()
   bert_Group.update()
   monster_Group.update()
-  me.check(block_Group)
-#  m1.check(bert_Group)
+  me.qcheck(block_Group)
+  if m1.mcheck(bert_Group) == 1:
+    me.image = swear
+    run = False
+  if m2.mcheck(bert_Group) == 1:
+    me.image = swear
+    run = False
+
   p.display.update()
- #     left = r.randint(0,1)
- #     right = r.randint(0,1)
+  print(clock.get_time())
