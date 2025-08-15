@@ -37,21 +37,22 @@ class qbert(p.sprite.Sprite):
         self.rect.x+=x
         self.rect.y+=y
         self.image = char
+    def mmove(self,char):
+        self.rect.x+=x
+        self.rect.y+=y
+        self.image = char
     def qcheck(self,gr): 
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
         if col:
            col[0].image = cube[1] 
         else:
-           self.rect.center = [500,170]
+            return 1
     def mcheck(self,gr): 
         col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
         if col:
-          print('good')
-          return 1
+           return 1
         else:
-            return 0
-
-
+            return 2
 me = qbert(bert[1],500,170)
 m1 = qbert(monsters[0],214,586)
 m2 = qbert(monsters[2],790,586)
@@ -82,13 +83,10 @@ while run == True:
         me.move(-32,-48,bert[3])
       if event.key == p.K_e:
         me.move(32,-48,bert[1])
-      if event.key == p.K_y:
-        m1.move(32,-48,monsters[1])
       if event.key == p.K_f:
         run = False
   screen.fill("cyan")
     
-  mx,my = p.mouse.get_pos()
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
@@ -96,12 +94,12 @@ while run == True:
   bert_Group.update()
   monster_Group.update()
   me.qcheck(block_Group)
+  p.display.update()
   if m1.mcheck(bert_Group) == 1:
     me.image = swear
     run = False
   if m2.mcheck(bert_Group) == 1:
     me.image = swear
     run = False
-
-  p.display.update()
-  print(clock.get_time())
+  if m2.mcheck(block_Group) == 2:
+    print('this')
