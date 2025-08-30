@@ -14,10 +14,11 @@ monster_y = [-48,48]
 bert = [0] * 10
 n = 0
 run = True
-for i in range(8):
-  monsters[i] = p.transform.scale2x(sheet.subsurface(i*16,32,16,32))
-  bert[i] = p.transform.scale2x(sheet.subsurface(i*16,0,16,16))
 
+for i in range(8):
+  bert[i] = p.transform.scale2x(sheet.subsurface(i*16,0,16,16))
+for j in range(8):
+  monsters[j] = p.transform.scale2x(sheet.subsurface(j*16,128,16,16))
 for i in range(3):
   cube[i]= sheet.subsurface(0,160+(i*32),32,32)
   cube[i]= p.transform.scale2x(cube[i])
@@ -31,7 +32,7 @@ class qbert(p.sprite.Sprite):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = (x,y)
+        self.rect.bottomleft = (x,y)
     def move(self,x,y,char):
         self.rect.x+=x
         self.rect.y+=y
@@ -42,17 +43,18 @@ class qbert(p.sprite.Sprite):
         col[0].image = cube[1]
       else:
         print('you fell off asshole')
-        return 2
+        return 1
     def mcheck(self,gr): 
-      col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.4))
+      col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
       if col:
-        col[0].image = cube[1]
+        return 0
       else:
-        return 2
+        print('bad')
+        return 1
         
         
-me = qbert(bert[1],500,170)
-m1 = qbert(monsters[0],214,586)
+me = qbert(bert[1],516,162)
+m1 = qbert(monsters[4],228,590)
 m2 = qbert(monsters[2],790,586)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
@@ -76,7 +78,7 @@ while run == True:
       if event.key == p.K_c:
         me.move(32,48,bert[5])
       if event.key == p.K_n:
-        m1.move(32,48,monsters[5])
+        m1.move(32,48,monsters[0])
       if event.key == p.K_z:
         me.move(-32,48,bert[7])
       if event.key == p.K_q:
@@ -87,6 +89,9 @@ while run == True:
         m1.move(32,-48,monsters[0])
       if event.key == p.K_f:
         run = False
+
+  mx,my = p.mouse.get_pos()
+#  print(mx,my)
   screen.fill("cyan")
   block_Group.draw(screen)
   bert_Group.draw(screen)
@@ -94,8 +99,9 @@ while run == True:
   block_Group.update()
   bert_Group.update()
   monster_Group.update()
-  p.display.update()
-  if(me.qcheck(block_Group)) == 2:
-        run = False
-  if(m1.mcheck(block_Group)) == 8:
+
+  if(me.qcheck(block_Group)):
+     run = False
+  if(m1.mcheck(block_Group)):
     run = False
+  p.display.update()
