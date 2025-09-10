@@ -33,23 +33,18 @@ class qbert(p.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.bottomleft = (x,y)
-    def move(self,x,y,char,gr):
-        tx = self.rect.x
-        ty = self.rect.y
-        print(tx,ty)
+    def bert_Move(self,x,y,char):
         self.rect.x+=x
         self.rect.y+=y
         self.image = char
-        col = p.sprite.spritecollide(self,gr,0,p.sprite.collide_circle_ratio(.5))
+        col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
         if col:
           col[0].image = cube[1]
         else:
-          self.rect.x = tx
-          self.rect.y = ty
-          return 5
-
-        
-me = qbert(bert[1],516,162)
+          return 1
+    def mon_Move(self,x,y,char):
+      pass    
+me = qbert(bert[1],518,155)
 m1 = qbert(monsters[4],228,590)
 m2 = qbert(monsters[2],790,586)
 bert_Group.add(me)
@@ -65,6 +60,9 @@ for i in range(10):
     n+=1
 
 
+def tunage():
+  p.mixer.music.load("/home/pi/Downloads/9-qbert-tune2wav-101soundboards.mp3")
+  p.mixer.music.play()
 
 p.display.set_caption("Bab bert")
 while run == True:
@@ -72,28 +70,36 @@ while run == True:
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
-        me.move(32,48,bert[5],block_Group)
+        if me.bert_Move(32,48,bert[5]):
+          tunage()
       if event.key == p.K_n:
-        m1.move(32,48,monsters[0],block_Group)
+        if m1.bert_Move(32,48,monsters[0]):
+          tunage()
       if event.key == p.K_z:
-        me.move(-32,48,bert[7],block_Group)
+        if me.bert_Move(-32,48,bert[7]):
+          tunage()
       if event.key == p.K_q:
-        me.move(-32,-48,bert[3],block_Group)
+        if me.bert_Move(-32,-48,bert[3]):
+          tunage()
       if event.key == p.K_e:
-        me.move(32,-48,bert[1],block_Group)
+        if me.bert_Move(32,-48,bert[1]):
+          tunage()
+          run = False
+
       if event.key == p.K_y:
-        m1.move(32,-48,monsters[0],bert_Group)
+        if m1.mon_Move(32,-48,monsters[0]):
+          tunage()
       if event.key == p.K_f:
         run = False
 
   mx,my = p.mouse.get_pos()
 #  print(mx,my)
   screen.fill("cyan")
-  block_Group.draw(screen)
-  bert_Group.draw(screen)
-  monster_Group.draw(screen)
   block_Group.update()
   bert_Group.update()
   monster_Group.update()
-
+  block_Group.draw(screen)
+  bert_Group.draw(screen)
+  monster_Group.draw(screen)
   p.display.update()
+  
