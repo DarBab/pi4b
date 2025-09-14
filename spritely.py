@@ -41,9 +41,12 @@ class qbert(p.sprite.Sprite):
         if col:
           col[0].image = cube[1]
         else:
+          self.image = swear
+          render()
           return 1
     def mon_Move(self,x,y,char):
-      pass    
+      pass  
+      
 me = qbert(bert[1],518,155)
 m1 = qbert(monsters[4],228,590)
 m2 = qbert(monsters[2],790,586)
@@ -63,10 +66,21 @@ for i in range(10):
 def tunage():
   p.mixer.music.load("/home/pi/Downloads/9-qbert-tune2wav-101soundboards.mp3")
   p.mixer.music.play()
+def render():
+  screen.fill("cyan")
+  block_Group.update()
+  bert_Group.update()
+  monster_Group.update()
+  block_Group.draw(screen)
+  bert_Group.draw(screen)
+  monster_Group.draw(screen)
+  p.display.update()
 
 p.display.set_caption("Bab bert")
 while run == True:
   clock.tick(60)
+  mx,my = p.mouse.get_pos()
+#  print(mx,my)
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
@@ -78,6 +92,8 @@ while run == True:
       if event.key == p.K_z:
         if me.bert_Move(-32,48,bert[7]):
           tunage()
+          p.time.delay(1000)
+          run = False
       if event.key == p.K_q:
         if me.bert_Move(-32,-48,bert[3]):
           tunage()
@@ -85,21 +101,11 @@ while run == True:
         if me.bert_Move(32,-48,bert[1]):
           tunage()
           run = False
-
       if event.key == p.K_y:
         if m1.mon_Move(32,-48,monsters[0]):
           tunage()
       if event.key == p.K_f:
         run = False
+  render()
 
-  mx,my = p.mouse.get_pos()
-#  print(mx,my)
-  screen.fill("cyan")
-  block_Group.update()
-  bert_Group.update()
-  monster_Group.update()
-  block_Group.draw(screen)
-  bert_Group.draw(screen)
-  monster_Group.draw(screen)
-  p.display.update()
   
