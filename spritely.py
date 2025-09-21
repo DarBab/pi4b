@@ -1,4 +1,5 @@
 import pygame as p
+import random as r
 p.init()
 clock = p.time.Clock()
 width = 1024
@@ -45,7 +46,20 @@ class qbert(p.sprite.Sprite):
           render()
           return 1
     def mon_Move(self,x,y,char):
-      pass  
+        tx = self.rect.x
+        ty = self.rect.y
+        self.rect.x+=x
+        self.rect.y+=y
+        self.image = char
+        col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
+        if col:
+          pass
+        else:
+          self.rect.x = tx
+          self.rect.y = ty
+          render()
+          return 1
+     
       
 me = qbert(bert[1],518,155)
 m1 = qbert(monsters[4],228,590)
@@ -62,10 +76,10 @@ for i in range(10):
     block_Group.add(b[n])
     n+=1
 
-
 def tunage():
   p.mixer.music.load("/home/pi/Downloads/9-qbert-tune2wav-101soundboards.mp3")
   p.mixer.music.play()
+
 def render():
   screen.fill("cyan")
   block_Group.update()
@@ -76,11 +90,20 @@ def render():
   monster_Group.draw(screen)
   p.display.update()
 
+def jump():
+  tt = p.time.get_ticks()+500
+  while tt-p.time.get_ticks() != 0:
+    pass
+  tx = r.randint(0,1)
+  ty = r.randint(0,1)
+  m1.mon_Move(monster_x[tx],monster_y[ty],monsters[7])
+  render()
+
 p.display.set_caption("Bab bert")
 while run == True:
   clock.tick(60)
   mx,my = p.mouse.get_pos()
-#  print(mx,my)
+  print(mx,my)
   for event in p.event.get():
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
@@ -107,5 +130,4 @@ while run == True:
       if event.key == p.K_f:
         run = False
   render()
-
-  
+  jump()  
