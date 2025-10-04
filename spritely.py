@@ -19,7 +19,7 @@ run = True
 for i in range(8):
   bert[i] = p.transform.scale2x(sheet.subsurface(i*16,0,16,16))
 for j in range(8):
-  monsters[j] = p.transform.scale2x(sheet.subsurface(j*16,128,16,16))
+  monsters[j] = p.transform.scale2x(sheet.subsurface(j*16,32,16,32))
 for i in range(3):
   cube[i]= sheet.subsurface(0,160+(i*32),32,32)
   cube[i]= p.transform.scale2x(cube[i])
@@ -64,7 +64,7 @@ class qbert(p.sprite.Sprite):
      
       
 me = qbert(bert[1],518,155)
-m1 = qbert(monsters[0],228,590)
+m1 = qbert(monsters[1],228,590)
 m2 = qbert(monsters[0],810,590)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
