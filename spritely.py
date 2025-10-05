@@ -33,7 +33,7 @@ class qbert(p.sprite.Sprite):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.bottomleft = (x,y)
+        self.rect.topleft = (x,y)
 
     def bert_Move(self,x,y,char):
         self.rect.x+=x
@@ -59,12 +59,18 @@ class qbert(p.sprite.Sprite):
         else:
           self.rect.x = tx
           self.rect.y = ty
-          jump(self)
           return 1
-     
+    def jump(self):
+  #while p.time.get_ticks() >= 0:
+    #pass
+      tx = r.randint(0,1)
+      ty = r.randint(0,1)
+      self.mon_Move(monster_x[tx],monster_y[ty],self.image)
+      render()
+ 
       
-me = qbert(bert[1],518,155)
-m1 = qbert(monsters[1],228,590)
+me = qbert(bert[1],518,155+32)
+m1 = qbert(monsters[0],228,590)
 m2 = qbert(monsters[0],810,590)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
@@ -90,16 +96,10 @@ def render():
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
-  p.draw.rect(screen,0,m1.rect,2)
+  #p.draw.rect(screen,0,me.rect,1)
+  #p.draw.rect(screen,0,m1.rect,1)
   p.display.update()
 
-def jump(self):
-  while tt-p.time.get_ticks() >= 0:
-    pass
-  tx = r.randint(0,1)
-  ty = r.randint(0,1)
-  self.mon_Move(monster_x[tx],monster_y[ty],monsters[0])
-  render()
 
 p.display.set_caption("Bab bert")
 while run == True:
@@ -129,7 +129,7 @@ while run == True:
       if event.key == p.K_f:
         run = False
   render()
-  tt = p.time.get_ticks()+500
-  jump(m1)
-  jump (m2)
+  #tt = p.time.get_ticks()+5000
+  #jump(m1)
+  #jump(m2)
  
