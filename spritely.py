@@ -19,7 +19,7 @@ run = True
 for i in range(8):
   bert[i] = p.transform.scale2x(sheet.subsurface(i*16,0,16,16))
 for j in range(8):
-  monsters[j] = p.transform.scale2x(sheet.subsurface(j*16,128,16,16))
+  monsters[j] = p.transform.scale2x(sheet.subsurface(j*16,16,16,16))
 for i in range(3):
   cube[i]= sheet.subsurface(0,160+(i*32),32,32)
   cube[i]= p.transform.scale2x(cube[i])
@@ -48,23 +48,26 @@ class qbert(p.sprite.Sprite):
           return 1
         
     def mon_Move(self,x,y,char):
-        self.image = bert[0]
         tx = self.rect.x
         ty = self.rect.y
         self.rect.x+=x
         self.rect.y+=y
-        col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_rect_ratio(.5))
+        col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
         if col:
-          pass
+          self.image = char
+          col[0].image = cube[0]
         else:
           self.rect.x = tx
           self.rect.y = ty
           return 1
+        bt = p.sprite.spritecollide(self,bert_Group,0,p.sprite.collide_circle_ratio(.5))        
+        if bt:
+          self.image = swear
  
       
 me = qbert(bert[1],518,155)
-m1 = qbert(monsters[3],228,590)
-m2 = qbert(monsters[0],810,590)
+m1 = qbert(monsters[1],228,590)
+m2 = qbert(monsters[5],810,590)
 bert_Group.add(me)
 monster_Group.add(m1,m2)
 
@@ -89,7 +92,6 @@ def render():
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
-  p.draw.rect(screen,0,m1.rect,5)
   p.display.update()
 def jump(char):
     while tt - p.time.get_ticks() >= 0:
@@ -128,6 +130,6 @@ while run == True:
       if event.key == p.K_f:
         run = False
   render()
-  #tt = p.time.get_ticks()+50
-  #jump(m1)
-  #jump(m2)
+  tt = p.time.get_ticks()+200
+  jump(m1)
+  jump(m2)
