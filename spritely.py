@@ -5,7 +5,7 @@ clock = p.time.Clock()
 width = 1024
 height = 768
 screen = p.display.set_mode((width,height))
-sheet = p.image.load("/home/pi/Downloads/qbert_sheet.png").convert_alpha()
+sheet = p.image.load("/home/pi/bert/qbert_sheet.png").convert_alpha()
 swear = p.transform.scale2x(sheet.subsurface(128,83,48,25))
 cube = [0] * 60
 b = [0] * 60
@@ -15,10 +15,10 @@ monster_y = [-48,48]
 bert = [0] * 10
 player = [0] * 8
 banner = [0] * 8
-n = 0
-bn = 0
-global pl,tt,tb
+global pl,banner_Time
+global run,score
 pl = 0
+n = 0
 run = True
 bert_Group = p.sprite.Group()
 block_Group = p.sprite.Group()
@@ -37,22 +37,22 @@ class qbert(p.sprite.Sprite):
         self.image = char
         col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
         if col:
-          col[0].image = cube[1]
+          col[0].image = cube[2]
           render()
           tunage()
         else:
           self.image = swear
           render()
           return 1    
-    def mon_Move(self,x,y,tg,char):
+    def mon_Move(self,x,y,char):
+        self.image = char
         tx = self.rect.x
         ty = self.rect.y
-        self.image = char
         self.rect.x+=x
         self.rect.y+=y
-        col = p.sprite.spritecollide(self,tg,0,p.sprite.collide_circle_ratio(.5))
+        col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
         if col:
-            pass
+          pass          
         else:
           self.rect.x = tx
           self.rect.y = ty
@@ -70,20 +70,22 @@ for i in range(10):#set up blocks
   x=-(32*i)+500
   y=200+48*i
   for j in range(i+1):
-    b[n] = qbert(cube[2],x,y)
+    b[n] = qbert(cube[1],x,y)
     x+=64
     block_Group.add(b[n])
     n+=1
      
 me = qbert(bert[1],518,155)
 m1 = qbert(monsters[1],228,590)
-m2 = qbert(monsters[5],810,590)
+m2 = qbert(monsters[1],810,590)
+
 bert_Group.add(me)
 monster_Group.add(m1,m2)
 p.display.set_caption("baburt")
+banner_Time = p.time.get_ticks() + 50
 
 def tunage():
-  p.mixer.music.load("/home/pi/Downloads/jump.mp3")
+  p.mixer.music.load("/home/pi/bert/jump.mp3")
   p.mixer.music.play()
 def render():
   screen.fill("black")
@@ -93,33 +95,36 @@ def render():
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
-  screen.blit(player[pl],(32,32))            #                         this too
+  p.draw.rect(screen,0,m1.rect,1)
+  screen.blit(player[pl],(32,32))            
   p.display.update()
-def jump(char,tg):
-    if tt - p.time.get_ticks() > 0:
-      pass
+def jump(char):
     tx = r.randint(0,1)
     ty = r.randint(0,1)
-    char.mon_Move(monster_x[tx],monster_y[ty],tg,char.image)
-    render()
-def scre():#                             this need help!!!
+    char.mon_Move(monster_x[tx],monster_y[ty],char.image)
+def scre():          
   score = 0
   for i in range(50):
-    if b[i].image == cube[1]:
-      score += 1
+    if b[i].image == cube[2]:
+      score += 25
     print(score)
+    if score > 75:
+      return 5
 def banner_scroll():
-    if tb - p.time.get_ticks() > 0:
+    global banner_Time
+    if banner_Time - p.time.get_ticks() > 0:
       pass
-    global pl
-    pl+=1 
-    if pl > 5:
-      pl = 0         #                         this too
+    else:
+      global pl
+      pl+=1 
+      if pl > 5:
+        pl = 0  
+      banner_Time = p.time.get_ticks() + 50
 
 while run == True:
   clock.tick(60)
   mx,my = p.mouse.get_pos()
-  print(mx,my)
+#  print(mx,my)
   
   for event in p.event.get():
     if event.type == p.KEYDOWN:
@@ -138,9 +143,11 @@ while run == True:
           tunage()
       if event.key == p.K_f:
         run = False
-  tt = p.time.get_ticks()+100
-  jump(m1,block_Group)
-  jump(m2,block_Group)
-  tb = p.time.get_ticks()+50000
+#  jump(m1,block_Group)
+#  jump(m2,block_Group)
   banner_scroll()
+  if scre() == 5:
+    run = False
+  jump(m1)
+  jump(m2)
   render()
