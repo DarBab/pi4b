@@ -15,7 +15,7 @@ monster_y = [-48,48]
 bert = [0] * 10
 player = [0] * 8
 banner = [0] * 8
-global pl,banner_Time
+global pl
 global run,score
 global monJump
 pl = 0
@@ -26,9 +26,10 @@ block_Group = p.sprite.Group()
 monster_Group = p.sprite.Group()
 MJ = p.USEREVENT+1
 MJ2 = p.USEREVENT+2
-
-p.time.set_timer(MJ,50)
-p.time.set_timer(MJ2,500)
+BAN = p.USEREVENT+3
+p.time.set_timer(MJ,1000)
+p.time.set_timer(MJ2,1000)
+p.time.set_timer(BAN,200)
 
 class qbert(p.sprite.Sprite):
     def __init__(self,image,x,y):
@@ -45,13 +46,16 @@ class qbert(p.sprite.Sprite):
         col = p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_circle_ratio(.5))
         if col:
           col[0].image = cube[2]
-          render()
           tunage()
         else:
           self.image = swear
           render()
-          return 1    
-    def mon_Move(self,x,y,char,cubet):
+        mhit = p.sprite.spritecollide(self,monster_Group,0,p.sprite.collide_mask)    
+        if mhit:
+          print('game over asshole')
+          me.image = swear
+          render()
+    def mon_Move(self,x,y,char):
         self.image = char
         tx = self.rect.x
         ty = self.rect.y
@@ -59,11 +63,12 @@ class qbert(p.sprite.Sprite):
         self.rect.y+=y        
         col = (p.sprite.spritecollide(self,block_Group,0,p.sprite.collide_mask))
         if col:
-          col[0].image = cube[cubet]
+          pass
         else:
           self.rect.x = tx
           self.rect.y = ty
-          jump(self,cubet) 
+          jump(self) 
+          
 for i in range(8):#bert
   bert[i] = p.transform.scale2x(sheet.subsurface(i*16,0,16,16))
 for j in range(8):#monsters
@@ -83,13 +88,12 @@ for i in range(10):# set up pyramid
     n+=1
      
 me = qbert(bert[1],518,155)
-m1 = qbert(monsters[1],226,592)
-m2 = qbert(monsters[0],810,592)
+m1 = qbert(monsters[0],226,592)
+m2 = qbert(monsters[2],810,592)
 
 bert_Group.add(me)
 monster_Group.add(m1,m2)
 p.display.set_caption("QBERT FOR LOSERS")
-banner_Time = p.time.get_ticks() + 500
 
 def tunage():
   p.mixer.music.load("/home/pi/bert/jump.mp3")
@@ -102,13 +106,12 @@ def render():
   block_Group.draw(screen)
   bert_Group.draw(screen)
   monster_Group.draw(screen)
-  p.draw.rect(screen,0,m1.rect,1)
   screen.blit(player[pl],(32,32))            
   p.display.update()
-def jump(char,cubeColor):
+def jump(char):
       tx = r.randint(0,1)
       ty = r.randint(0,1)
-      char.mon_Move(monster_x[tx],monster_y[ty],char.image,cubeColor)
+      char.mon_Move(monster_x[tx],monster_y[ty],char.image)
 def scre():          
   score = 0
   for i in range(50):
@@ -118,15 +121,10 @@ def scre():
     if score == 1250:
       return 5
 def banner_scroll():
-    global banner_Time
-    if banner_Time - p.time.get_ticks() > 0:
-      pass
-    else:
-      global pl
-      pl+=1 
-      if pl > 5:
-        pl = 0  
-      banner_Time = p.time.get_ticks() + 100
+    global pl
+    pl+=1
+    if pl > 5:
+      pl=0
 
 while run == True:
   clock.tick(60)
@@ -134,9 +132,11 @@ while run == True:
   
   for event in p.event.get():
     if event.type == MJ:
-      jump(m1,4)
+      jump(m1)
     if event.type == MJ2:
-      jump(m2,3)
+      jump(m2)
+    if event.type == BAN:
+      banner_scroll()
     if event.type == p.KEYDOWN:
       if event.key == p.K_c:
         me.bert_Move(32,48,bert[5])
@@ -153,7 +153,6 @@ while run == True:
           tunage()
       if event.key == p.K_f:
         run = False
-  banner_scroll()
 #  if scre():
 #    me.image = swear
 #    p.time.delay(3000)
