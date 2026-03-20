@@ -40,31 +40,29 @@ def setup():
     
 
 def loop():
- #   for t in range(500):
-        for i in pic:
-            GPIO.output(latchPin,0)            
-            for j in range(8):
-                bit = (((i<<j)&128)==128)
-                GPIO.output(dataPin,bit)
-                GPIO.output(clockPin,1)
-                time.sleep(.001)
-                GPIO.output(clockPin,0)
-            for k in range(8):
-                bit = k&128
-                GPIO.output(dataPin,bit)
-                GPIO.output(clockPin,1)
-                time.sleep(.001)
-                GPIO.output(clockPin,0)
-        GPIO.output(latchPin,1)
-
+    GPIO.output(latchPin,0)            
+    for i in data:
+        for j in range(0,8):
+            bit = (((i<<j)&128)==128)
+            print (i,bit)
+            GPIO.output(dataPin,bit)
+            GPIO.output(clockPin,1)
+            time.sleep(.001)
+            GPIO.output(clockPin,0)
+        x=128
+        for k in range(0,8):
+            GPIO.output(dataPin,1)
+            GPIO.output(clockPin,1)
+            time.sleep(.001)
+            GPIO.output(clockPin,0)
+            x>>=1
+    GPIO.output(latchPin,1)
 
 def destroy():  
     GPIO.cleanup()
-if __name__ == '__main__':  # Program entrance
-    print ('Program is starting...' )
-    setup() 
-    try:
-        loop()  
-    except KeyboardInterrupt:   # Press ctrl-c to end the program.
-        destroy()  
+setup() 
+try:
+    loop()  
+except KeyboardInterrupt:   # Press ctrl-c to end the program.
+    destroy()  
 
