@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-#############################################################################
-# Filename    : LEDMatrix.py
-# Description : Control LEDMatrix with 74HC595
-# Author      : www.freenove.com
-# modification: 2019/12/28
-########################################################################
 import RPi.GPIO as GPIO
 import time
 
@@ -40,25 +33,26 @@ def setup():
     
 
 def loop():
-    GPIO.output(latchPin,0)            
-    for i in data:
-        for j in range(0,8):
-            bit = (((i<<j)&128)==128)
-            print (i,bit)
-            GPIO.output(dataPin,bit)
-            GPIO.output(clockPin,1)
-            time.sleep(.001)
-            GPIO.output(clockPin,0)
-        x=128
-        for k in range(0,8):
-            GPIO.output(dataPin,1)
-            GPIO.output(clockPin,1)
-            time.sleep(.001)
-            GPIO.output(clockPin,0)
-            x>>=1
-    GPIO.output(latchPin,1)
-
-def destroy():  
+    for p in range(20):
+        for i in range(0,len(pic),8):
+            x=1
+            GPIO.output(latchPin,0) 
+            for j in range(0,8):
+                bit = ((data[i+j]<<j)&128)==128
+                GPIO.output(dataPin,bit)
+                GPIO.output(clockPin,0)
+                time.sleep(.0001)
+                GPIO.output(clockPin,1)
+            for k in range(8):
+                bit = (((x<<k)&128)==128)
+                GPIO.output(clockPin,0)
+                GPIO.output(dataPin,not(bit))
+                time.sleep(.0001)
+                GPIO.output(clockPin,1)
+                x=x<<1
+            GPIO.output(latchPin,1)
+            time.sleep(1)
+def destroy():
     GPIO.cleanup()
 setup() 
 try:
