@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time
+import time as t
 
 dataPin   = 11      # DS Pin of 74HC595(Pin14)
 latchPin  = 13      # ST_CP Pin of 74HC595(Pin12)
@@ -33,30 +33,30 @@ def setup():
     
 
 def loop():
-    for p in range(20):
-        for i in range(0,len(pic),8):
-            x=1
-            GPIO.output(latchPin,0) 
-            for j in range(0,8):
-                bit = ((data[i+j]<<j)&128)==128
-                GPIO.output(dataPin,bit)
-                GPIO.output(clockPin,0)
-                time.sleep(.0001)
-                GPIO.output(clockPin,1)
-            for k in range(8):
-                bit = (((x<<k)&128)==128)
-                GPIO.output(clockPin,0)
-                GPIO.output(dataPin,not(bit))
-                time.sleep(.0001)
-                GPIO.output(clockPin,1)
+        for loop in range(100):
+            x=0x01
+            for i in range(0,8):
+                GPIO.output(latchPin,0) 
+                shift(pic[i])
+                shift(~x)
+                GPIO.output(latchPin,1)
+                t.sleep(.0001)
                 x=x<<1
-            GPIO.output(latchPin,1)
-            time.sleep(1)
+            t.sleep(.001)
+
+def shift(sh):
+    for j in range(0,8):
+        bit = ((sh<<j)&128)==128
+        GPIO.output(dataPin,bit)
+        GPIO.output(clockPin,0)
+        t.sleep(.0001)
+        GPIO.output(clockPin,1)
 def destroy():
     GPIO.cleanup()
 setup() 
 try:
-    loop()  
+    loop()
+    destroy()
 except KeyboardInterrupt:   # Press ctrl-c to end the program.
     destroy()  
 
